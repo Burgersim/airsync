@@ -1,0 +1,50 @@
+query liveBibleSync($CRID: String!) {
+    resource(id: $CRID, includeDraft: false, includeUnpublished: false) {
+        id
+        ... on LiveVideo {
+            events {
+                season {
+                    title {
+                        text
+                    }
+                }
+                series {
+                    title {
+                        text
+                    }
+                }
+            }
+            locations {
+                location {
+                    city
+                    countryName
+                }
+            }
+            title {
+                text
+            }
+            subHeading {
+                text
+            }
+            description {
+                contents {
+                    ... on AttributeText {
+                        text
+                    }
+                }
+            }
+            teaser {
+                text
+            }
+            startDate {
+                dateTimeUTC
+            }
+            endDate {
+                dateTimeUTC
+            }
+            videoEssence {
+                attributes
+            }
+        }
+    }
+}

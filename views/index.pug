@@ -1,0 +1,37 @@
+extends ../node_modules/jade-bootstrap/layouts/bootswatch
+append styles
+    link(href=`../css/rbtv.css`, rel='stylesheet')
+block body
+    .container(style="text-align: center")
+        h1= title
+        p To start Airsync click the button below
+        //+alert-success('')
+        p(id='time')= ""
+        a(onclick='startExport()', id='button')
+            div(class='btn btn-danger btn-lg ld-ext-right running', id='importButton')= "Start Sync"
+    script.
+        let syncInProgress = false;
+
+        async function startExport() {
+            syncInProgress = true;
+
+            document.getElementById('importButton').innerHTML = `Loading... <div class="ld ld-ring ld-spin""></div>`
+
+            await fetch('/request', {method: 'get', keepalive: true}).then(res =>res.json()).then(res => {
+
+                document.getElementById('time').innerHTML = `<div class="alert alert-success" role="alert"">${res}</div>`
+
+                document.getElementById('importButton').innerHTML = `Done`
+                document.getElementById('importButton').setAttribute('disabled', 'true')
+                document.getElementById('button').setAttribute('onclick', 'javascript: void(0)')
+
+
+
+                setTimeout(() => {
+                    document.getElementById('time').innerHTML = ` `
+                    document.getElementById('importButton').innerHTML = `Start Sync`
+                    document.getElementById('button').setAttribute('onclick', 'startExport()')
+                    document.getElementById('importButton').removeAttribute('disabled')
+                }, 9000);
+            })
+        }
